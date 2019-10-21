@@ -1,11 +1,22 @@
 {
+  "orchestra": {
+    "omitSubnet": false,
+    "hostRPCAddressesIfOmitSubnet": [],
+    "messageNanoSecondInterval": 100000000,
+    "clientTimeoutSeconds": 20,
+    "messageLocation": "client.message.json",
+    "messageByteSize": 1000,
+    "testDurationSeconds": 90,
+    "testWarmupSeconds": 10,
+    "testCooldownSeconds": 10
+  },
   "subnet": {
-    "numHosts": 10,
+    "numHosts": 50,
     "pubsubCIDR": "127.0.0.1/8",
     "pubsubPortRange": [3000, 4000],
     "rpcCIDR": "127.0.0.1/8",
     "rpcPortRange": [8080, 9080],
-    "peerTopology": "linear"
+    "peerTopology": "whiteblocks"
   },
   "host": {
     "transports": ["tcp", "ws"],
@@ -20,6 +31,6 @@
     "omitRouting": true
   },
   "general": {
-    "loggerLocation": "log.txt"
+    "loggerLocation": ""
   }
 }

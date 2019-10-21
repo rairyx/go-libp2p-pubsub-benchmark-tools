@@ -571,7 +571,7 @@ func TestParseLogLine(t *testing.T) {
 			out:   nil,
 		},
 		{
-			in:    []byte(`time="2019-10-08T03:33:35Z" level=info msg="Pubsub message received: QmYBvjm9qTc1bYkm6KsrprraVA4Y8NiBVjK751dijyS4t1,QmW5V3oyFASqxobsmY3vyYsL1kSu7B6nDbVAUAivC5rXmU,foo,1570505610507484693,1570505615043912938,1 source="pubsub.go:33:host.pubsubHandler"`),
+			in:    []byte(`time="2019-10-08T03:33:35Z" level=info msg="Pubsub message received: QmYBvjm9qTc1bYkm6KsrprraVA4Y8NiBVjK751dijyS4t1,QmW5V3oyFASqxobsmY3vyYsL1kSu7B6nDbVAUAivC5rXmU,foo,1570505610507484693,1570505615043912938,1" source="pubsub.go:33:host.pubsubHandler"`),
 			toErr: false,
 			out: &types.MessageLog{
 				HostID:    "QmYBvjm9qTc1bYkm6KsrprraVA4Y8NiBVjK751dijyS4t1",
@@ -920,13 +920,16 @@ func TestBuildMetricsFromSortedMessageLogs(t *testing.T) {
 		{
 			in: []*types.MessageLog{
 				&types.MessageLog{
-					HostID:   "2",
-					SenderID: "1",
-					NanoTime: 1,
+					MessageID: "foo",
+					HostID:    "2",
+					SenderID:  "1",
+					NanoTime:  1,
 				},
 			},
 			toErr: false,
 			out: &types.Metric{
+				MessageID:                 "foo",
+				OriginatorHostID:          "1",
 				TotalNanoTime:             0,
 				LastDeliveryHop:           1,
 				RelativeMessageRedundancy: 0,
@@ -935,33 +938,40 @@ func TestBuildMetricsFromSortedMessageLogs(t *testing.T) {
 		{
 			in: []*types.MessageLog{
 				&types.MessageLog{
-					HostID:   "2",
-					SenderID: "1",
-					NanoTime: 1,
+					MessageID: "foo",
+					HostID:    "2",
+					SenderID:  "1",
+					NanoTime:  1,
 				},
 				&types.MessageLog{
-					HostID:   "3",
-					SenderID: "2",
-					NanoTime: 2,
+					MessageID: "foo",
+					HostID:    "3",
+					SenderID:  "2",
+					NanoTime:  2,
 				},
 				&types.MessageLog{
-					HostID:   "4",
-					SenderID: "3",
-					NanoTime: 3,
+					MessageID: "foo",
+					HostID:    "4",
+					SenderID:  "3",
+					NanoTime:  3,
 				},
 				&types.MessageLog{
-					HostID:   "5",
-					SenderID: "4",
-					NanoTime: 4,
+					MessageID: "foo",
+					HostID:    "5",
+					SenderID:  "4",
+					NanoTime:  4,
 				},
 				&types.MessageLog{
-					HostID:   "1",
-					SenderID: "1",
-					NanoTime: 5,
+					MessageID: "foo",
+					HostID:    "1",
+					SenderID:  "1",
+					NanoTime:  5,
 				},
 			},
 			toErr: false,
 			out: &types.Metric{
+				MessageID:                 "foo",
+				OriginatorHostID:          "1",
 				TotalNanoTime:             4,
 				LastDeliveryHop:           4,
 				RelativeMessageRedundancy: (5.0 / (5.0 - 1.0)) - 1.0,
@@ -970,53 +980,64 @@ func TestBuildMetricsFromSortedMessageLogs(t *testing.T) {
 		{
 			in: []*types.MessageLog{
 				&types.MessageLog{
-					HostID:   "2",
-					SenderID: "1",
-					NanoTime: 1,
+					MessageID: "foo",
+					HostID:    "2",
+					SenderID:  "1",
+					NanoTime:  1,
 				},
 				&types.MessageLog{
-					HostID:   "9",
-					SenderID: "1",
-					NanoTime: 1,
+					MessageID: "foo",
+					HostID:    "9",
+					SenderID:  "1",
+					NanoTime:  1,
 				},
 				&types.MessageLog{
-					HostID:   "3",
-					SenderID: "2",
-					NanoTime: 2,
+					MessageID: "foo",
+					HostID:    "3",
+					SenderID:  "2",
+					NanoTime:  2,
 				},
 				&types.MessageLog{
-					HostID:   "4",
-					SenderID: "2",
-					NanoTime: 3,
+					MessageID: "foo",
+					HostID:    "4",
+					SenderID:  "2",
+					NanoTime:  3,
 				},
 				&types.MessageLog{
-					HostID:   "5",
-					SenderID: "3",
-					NanoTime: 4,
+					MessageID: "foo",
+					HostID:    "5",
+					SenderID:  "3",
+					NanoTime:  4,
 				},
 				&types.MessageLog{
-					HostID:   "6",
-					SenderID: "5",
-					NanoTime: 5,
+					MessageID: "foo",
+					HostID:    "6",
+					SenderID:  "5",
+					NanoTime:  5,
 				},
 				&types.MessageLog{
-					HostID:   "7",
-					SenderID: "6",
-					NanoTime: 6,
+					MessageID: "foo",
+					HostID:    "7",
+					SenderID:  "6",
+					NanoTime:  6,
 				},
 				&types.MessageLog{
-					HostID:   "8",
-					SenderID: "4",
-					NanoTime: 7,
+					MessageID: "foo",
+					HostID:    "8",
+					SenderID:  "4",
+					NanoTime:  7,
 				},
 				&types.MessageLog{
-					HostID:   "1",
-					SenderID: "1",
-					NanoTime: 8,
+					MessageID: "foo",
+					HostID:    "1",
+					SenderID:  "1",
+					NanoTime:  8,
 				},
 			},
 			toErr: false,
 			out: &types.Metric{
+				MessageID:                 "foo",
+				OriginatorHostID:          "1",
 				TotalNanoTime:             7,
 				LastDeliveryHop:           5,
 				RelativeMessageRedundancy: (9.0 / (9.0 - 1.0)) - 1.0,
@@ -1155,16 +1176,22 @@ func TestBuildMetricsFromMessageLogs(t *testing.T) {
 			},
 			out: []*types.Metric{
 				&types.Metric{
+					MessageID:                 "1",
+					OriginatorHostID:          "1",
 					TotalNanoTime:             0,
 					LastDeliveryHop:           1,
 					RelativeMessageRedundancy: 0,
 				},
 				&types.Metric{
+					MessageID:                 "2",
+					OriginatorHostID:          "1",
 					TotalNanoTime:             4,
 					LastDeliveryHop:           4,
 					RelativeMessageRedundancy: (5.0 / (5.0 - 1.0)) - 1.0,
 				},
 				&types.Metric{
+					MessageID:                 "3",
+					OriginatorHostID:          "1",
 					TotalNanoTime:             7,
 					LastDeliveryHop:           5,
 					RelativeMessageRedundancy: (9.0 / (9.0 - 1.0)) - 1.0,
@@ -1313,16 +1340,22 @@ func TestBuildMetricsFromMessageLogsGroups(t *testing.T) {
 			},
 			out: []*types.Metric{
 				&types.Metric{
+					MessageID:                 "1",
+					OriginatorHostID:          "1",
 					TotalNanoTime:             0,
 					LastDeliveryHop:           1,
 					RelativeMessageRedundancy: 0,
 				},
 				&types.Metric{
+					MessageID:                 "2",
+					OriginatorHostID:          "1",
 					TotalNanoTime:             4,
 					LastDeliveryHop:           4,
 					RelativeMessageRedundancy: (5.0 / (5.0 - 1.0)) - 1.0,
 				},
 				&types.Metric{
+					MessageID:                 "3",
+					OriginatorHostID:          "1",
 					TotalNanoTime:             7,
 					LastDeliveryHop:           5,
 					RelativeMessageRedundancy: (9.0 / (9.0 - 1.0)) - 1.0,
@@ -1343,9 +1376,16 @@ func TestBuildMetricsFromMessageLogsGroups(t *testing.T) {
 						t.Fatal("expected err but received none")
 					}
 				}
+				var expected *types.Metric
+				for _, metric := range tt.out {
+					if result.MessageID == metric.MessageID {
+						expected = metric
+						break
+					}
+				}
 
-				if !reflect.DeepEqual(result, tt.out[idx]) {
-					t.Errorf("want %v; got %v", tt.out[idx], result)
+				if !reflect.DeepEqual(result, expected) {
+					t.Errorf("want %v; got %v", expected, result)
 				}
 			}
 		})
