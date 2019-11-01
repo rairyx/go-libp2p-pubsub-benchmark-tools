@@ -1,6 +1,8 @@
 {
   "host": {
     "privPEM": "",
+    "keyType": "ecdsa",
+    "rsaBits": 2048,
     "transports": ["tcp", "ws"],
     "listens": ["/ip4/0.0.0.0/tcp/3000","/ip4/0.0.0.0/tcp/3001/ws"],
     "rpcAddress": "0.0.0.0:8080",
@@ -13,7 +15,10 @@
     "omitNATPortMap": false,
     "omitRPCServer": false,
     "omitDiscoveryService": false,
-    "omitRouting": false,
-    "loggerLocation": ""
+    "omitRouting": false
+  },
+  "general": {
+    "loggerLocation": "",
+    "debug": true
   }
 }
