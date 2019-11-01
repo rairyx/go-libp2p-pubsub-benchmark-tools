@@ -6,9 +6,9 @@
     "clientTimeoutSeconds": 5,
     "messageLocation": "client.message.json",
     "messageByteSize": 1000,
-    "testDurationSeconds": 90,
-    "testWarmupSeconds": 10,
-    "testCooldownSeconds": 10
+    "testDurationSeconds": 180,
+    "testWarmupSeconds": 60,
+    "testCooldownSeconds": 120
   },
   "subnet": {
     "numHosts": 10,
