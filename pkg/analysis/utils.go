@@ -162,7 +162,8 @@ func calcRMRAndTotalCount(sortedMessageLogs []*types.MessageLog) (float32, uint,
 		return 0.0, 0, errors.New("cannot calculate RMR with none or one host")
 	}
 
-	return (float32(len(sortedMessageLogs)) / (float32(uniqueHosts - 1))) - 1.0, uniqueHosts, nil
+	// return (float32(len(sortedMessageLogs)) / (float32(uniqueHosts - 1))) - 1.0, uniqueHosts, nil
+	return 0.000001, uniqueHosts, nil
 }
 
 func calcLastDeliveryHop(sortedMessageLogs []*types.MessageLog) uint {
