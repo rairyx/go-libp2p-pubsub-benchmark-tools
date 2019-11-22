@@ -14,8 +14,8 @@
     "omitConnectionManager": false,
     "omitNATPortMap": false,
     "omitRPCServer": false,
-    "omitDiscoveryService": false,
-    "omitRouting": false
+    "omitDiscoveryService": true,
+    "omitRouting": true
   },
   "general": {
     "loggerLocation": "",
