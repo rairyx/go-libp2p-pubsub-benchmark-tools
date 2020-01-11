@@ -36,3 +36,5 @@ require (
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
 	google.golang.org/grpc v1.23.1
 )
+
+replace github.com/libp2p/go-libp2p-pubsub v0.1.1 => github.com/rairyx/go-libp2p-pubsub v0.0.0-20190910181248-5fd5587c4935

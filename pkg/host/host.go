@@ -7,11 +7,13 @@ import (
 	"os"
 	"strings"
 	"time"
+        //"encoding/binary"
 
 	rpcHost "github.com/agencyenterprise/go-libp2p-pubsub-benchmark-tools/pkg/grpc/host"
 	"github.com/agencyenterprise/go-libp2p-pubsub-benchmark-tools/pkg/host/config"
 	"github.com/agencyenterprise/go-libp2p-pubsub-benchmark-tools/pkg/logger"
 
+	//pb "github.com/agencyenterprise/go-libp2p-pubsub-benchmark-tools/pkg/pb/publisher"
 	ipfsaddr "github.com/ipfs/go-ipfs-addr"
 	"github.com/libp2p/go-libp2p"
 	connmgr "github.com/libp2p/go-libp2p-connmgr"
@@ -231,7 +233,7 @@ func (h *Host) BuildPubSub() (*pubsub.PubSub, error) {
 	switch strings.ToLower(h.conf.Host.PubsubAlgorithm) {
 	case "gossip":
 		logger.Info("building gossip pubsub")
-		ps, err = pubsub.NewGossipSub(h.ctx, h.host)
+		ps, err = pubsub.NewGossipSub(h.ctx, h.host, pubsub.WithMessageSigning(false))
 
 	case "flood":
 		logger.Info("building flood pubsub")
@@ -251,11 +253,34 @@ func (h *Host) BuildPubSub() (*pubsub.PubSub, error) {
 	}
 
 	// subscribe to the topic
+//	sub, err := ps.Subscribe(pubsubTopic)
 	_, err = ps.Subscribe(pubsubTopic)
 	if err != nil {
 		logger.Errorf("err subscribing\n%v", err)
 		return nil, err
 	}
+/*
+	go func() {
+		for {
+			msg, err := sub.Next(context.Background())
+			if err != nil {
+				fmt.Println("Error (sub.Next): %v", err)
+				panic(err)
+			}
+			msgx := pb.Message{}
+			if err := msgx.XXX_Unmarshal(msg.GetData()); err != nil {
+				logger.Errorf("err unmarshaling next message:\n%v", err)
+			}
+
+			logger.Warnf("Pubsub message received: %v,%v,%v,%v,%d,%d", h.host.ID(), msg.GetFrom(), msgx.GetId(), binary.BigEndian.Uint64(msg.GetSeqno()), time.Now().UnixNano(), msgx.GetSequence())
+			//logger.Warnf("Pubsub message received: %v,%v,%d,%s", h.host.ID(), msg.GetFrom(), time.Now().UnixNano(), msg.GetState())
+
+
+			//fmt.Printf("%s: %s\n", msg.GetFrom(), string(msg.GetData()))
+			//fmt.Printf("%s\n", string(msg.GetData()))
+		}
+	}()
+*/
 
 	if err = ps.RegisterTopicValidator(pubsubTopic, buildValidator(h.host.ID())); err != nil {
 		logger.Errorf("err registering valudator:\n%v", err)
