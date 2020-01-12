@@ -53,7 +53,6 @@ func (h *Host) PublishMessage(ctx context.Context, in *pb.Message) (*pb.PublishR
 		h.props.CH <- err
 		return nil, err
 	}
-
 	if err = h.props.PS.Publish(h.props.PubsubTopic, bs); err != nil {
 		logger.Errorf("err publishing message:\n%v", err)
 		h.props.CH <- err
